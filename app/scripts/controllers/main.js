@@ -8,8 +8,16 @@
  * Controller of the workspaceYeomanApp
  */
 angular.module('workspaceYeomanApp')
-  .controller('MainCtrl', function ($scope) {
-    $scope.todos = [];
+  .controller('MainCtrl', function ($scope, localStorageService) {
+
+    // load from storage service
+    var todosInStore = localStorageService.get('todos');
+
+    $scope.todos = todosInStore || [];
+
+    $scope.$watch('todos', function () {
+      localStorageService.set('todos', $scope.todos);
+    }, true);
 
     $scope.addTodo = function(){
       $scope.todos.push($scope.todo);
